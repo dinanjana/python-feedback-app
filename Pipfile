@@ -11,6 +11,7 @@ pprint = "*"
 dnspython = "*"
 pymongo = {extras = ["srv"], version = "*"}
 motor = "*"
+minio = "*"
 
 [requires]
 python_version = "2.7"

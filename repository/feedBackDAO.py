@@ -1,12 +1,11 @@
 from datetime import datetime
 import repository.connectors.mongoDBConnector
-
+import logging
 
 async def add_feedback(feedback):
     now = datetime.now()
     timestamp = datetime.timestamp(now)
-    print('1')
-    print(feedback)
+    logging.info('Inserting feedback' + str(feedback))
     return await repository.connectors.mongoDBConnector.db.insert_one({
         "id": str(timestamp),
         "feedBack": "\"" +feedback['feedBack'] + "\"",
