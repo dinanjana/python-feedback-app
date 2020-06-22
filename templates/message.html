@@ -1,1 +1,15 @@
-<div class="message">{% module linkify(message["feedBack"]) %}</div>
+<div class="message">
+    {% if "name" in message %}
+        {% module linkify(message["name"]) %}
+    {% else %}
+        {% module linkify('Unknown') %}
+    {% end %}
+    said
+    "{% module linkify(message["feedBack"]) %}"
+    and gave
+    {% if "stars" in message %}
+        {% module linkify(message["stars"]) %}
+    {% else %}
+        {% module linkify('0') %}
+    {% end %}/ 5
+</div>
