@@ -1,34 +1,17 @@
 from datetime import datetime
-from minio import Minio
-from minio.error import (ResponseError, BucketAlreadyOwnedByYou,
-                         BucketAlreadyExists)
-import logging
+import repository.file_uploader_dao
 
-# Initialize minioClient with an endpoint and access/secret keys.
-minioClient = Minio('play.min.io',
-                    access_key='Q3AM3UQ867SPQQA43P2F',
-                    secret_key='zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG',
-                    secure=True)
+log_file_location=''
 
 
 # Make a bucket with the make_bucket API call.
-def init():
-    logging.info('Initiating log file upload')
-    try:
-        minioClient.make_bucket("logs", location="us-east-1")
-    except BucketAlreadyOwnedByYou as err:
-        logging.warn(str(err))
-        pass
-    except BucketAlreadyExists as err:
-        logging.warn(str(err))
-        pass
-    except ResponseError as err:
-        logging.error(str(err))
-        raise
+def init_log_file_upload():
+    now = datetime.now()
+    timestamp = datetime.timestamp(now)
+    global log_file_location
+    log_file_location = 'application' + str(timestamp) + '.log'
+    repository.file_uploader_dao.init_log_file_uploader('logs/application.log', log_file_location)
 
-    try:
-        now = datetime.now()
-        timestamp = datetime.timestamp(now)
-        minioClient.fput_object('logs', 'application'+str(timestamp)+'.log', 'logs/application.log')
-    except ResponseError as err:
-        print(err)
+
+def get_log_file_location():
+    return log_file_location

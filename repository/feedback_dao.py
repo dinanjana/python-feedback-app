@@ -8,7 +8,9 @@ async def add_feedback(feedback):
     logging.info('Inserting feedback' + str(feedback))
     return await repository.connectors.mongoDBConnector.db.insert_one({
         "id": str(timestamp),
-        "feedBack": "\"" +feedback['feedBack'] + "\"",
+        "feedBack": feedback['feedBack'],
+        "name": feedback['name'],
+        "stars": feedback['stars']
     })
 
 

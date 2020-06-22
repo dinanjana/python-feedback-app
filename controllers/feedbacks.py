@@ -11,7 +11,11 @@ class FeedbacksHandler(tornado.web.RequestHandler):
     """Post a new feedback."""
 
     async def post(self):
-        message = {"feedBack": self.get_argument("body")}
+        message = {
+            "feedBack": self.get_argument("body"),
+            "name": self.get_argument("name"),
+            "stars": self.get_argument("stars")
+        }
         await service.feedback.add_feedback(feedback=message)
         message["html"] = tornado.escape.to_unicode(
             self.render_string("message.html", message=message)

@@ -38,3 +38,7 @@ td {
   float: right;
   z-index: 99;
 }
+
+.checked {
+  color: orange;
+}

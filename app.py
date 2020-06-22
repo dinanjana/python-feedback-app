@@ -25,7 +25,7 @@ def main():
         debug=options.debug,
     )
     app.listen(options.port)
-    service.file_uploader.init()
+    service.file_uploader.init_log_file_upload()
     tornado.ioloop.IOLoop.current().start()
 
 

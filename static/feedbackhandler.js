@@ -1,25 +1,29 @@
 $(document).ready(function() {
-    if (!window.console) window.console = {};
-    if (!window.console.log) window.console.log = function() {};
 
     $("#messageform").on("submit", function() {
+        $("input[name='stars']").val($('.fa-star.checked').length)
         newMessage($(this));
         return false;
     });
     $("#messageform").on("keypress", function(e) {
         if (e.keyCode == 13) {
+            $("input[name='stars']").val($('.fa-star.checked').length)
             newMessage($(this));
             return false;
         }
         return true;
     });
     $("#message").select();
+    $('.fa-star').click(function (){
+        $(this).toggleClass('checked')
+    })
     updater.poll();
 });
 
 function newMessage(form) {
-    var message = form.formToDict();
-    var disabled = form.find("input[type=submit]");
+    const message = form.formToDict();
+    const disabled = form.find("input[type=submit]");
+    console.log(message)
     disabled.disable();
     $.postJSON("/feedbacks/", message, function(response) {
         updater.showMessage(response);
@@ -33,24 +37,27 @@ function newMessage(form) {
 }
 
 function getCookie(name) {
-    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    const r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
     return r ? r[1] : undefined;
 }
 
 jQuery.postJSON = function(url, args, callback) {
     args._xsrf = getCookie("_xsrf");
     $.ajax({url: url, data: $.param(args), dataType: "text", type: "POST",
-            success: function(response) {
-        if (callback) callback(eval("(" + response + ")"));
-    }, error: function(response) {
-        console.log("ERROR:", response);
-    }});
+            success:
+                function(response) {
+                    if (callback) callback(eval("(" + response + ")"));
+                },
+            error: function(response) {
+                    console.error("ERROR:", response);
+                }
+    });
 };
 
 jQuery.fn.formToDict = function() {
-    var fields = this.serializeArray();
-    var json = {};
-    for (var i = 0; i < fields.length; i++) {
+    const fields = this.serializeArray();
+    const json = {};
+    for (let i = 0; i < fields.length; i++) {
         json[fields[i].name] = fields[i].value;
     }
     if (json.next) delete json.next;
@@ -71,19 +78,19 @@ jQuery.fn.enable = function(opt_enable) {
     return this;
 };
 
-var updater = {
+const updater = {
     errorSleepTime: 500,
     cursor: null,
 
     poll: function() {
-        var args = {"_xsrf": getCookie("_xsrf")};
+        const args = {"_xsrf": getCookie("_xsrf")};
         if (updater.cursor) args.cursor = updater.cursor;
     },
 
     showMessage: function(message) {
-        var existing = $("#m" + message.id);
+        const existing = $("#m" + message.id);
         if (existing.length > 0) return;
-        var node = $(message.html);
+        const node = $(message.html);
         node.hide();
         $("#inbox").append(node);
         node.slideDown();
