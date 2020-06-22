@@ -5,6 +5,7 @@ import tornado.web
 import os.path
 import controllers.feedbacks
 import service.file_uploader
+import service.feedback
 from tornado.options import define, options, parse_command_line
 import logging
 
@@ -24,8 +25,9 @@ def main():
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         debug=options.debug,
     )
-    app.listen(options.port)
     service.file_uploader.init_log_file_upload()
+    service.feedback.get_log_file_location(service.file_uploader.get_log_file_location())
+    app.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
 
 
