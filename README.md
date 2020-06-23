@@ -10,6 +10,8 @@ Run this :
 
 cd into 
 `cd feed-back-api` then run
+`pipenv install`
+`pipenv shell`
 `python3 app.py`
 
 Launch:
