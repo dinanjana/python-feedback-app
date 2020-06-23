@@ -15,10 +15,29 @@ $(document).ready(function() {
     });
     $("#message").select();
     $('.fa-star').click(function (){
-        $(this).toggleClass('checked')
+        updateStars($(this));
     })
     updater.poll();
 });
+
+function updateStars(star) {
+    star.toggleClass('checked');
+    const numberOfStars = $('.fa-star.checked').length
+    const starContainer = star.parent();
+    starContainer.empty();
+    let checkedStars = 0
+    for(let i = 0; i < 5; i++ ){
+        if (checkedStars < numberOfStars) {
+            starContainer.append("<span class='fa fa-star checked'></span>");
+            ++checkedStars;
+        } else {
+            starContainer.append("<span class='fa fa-star'></span>");
+        }
+    }
+    $('.fa-star').click(function (){
+        updateStars($(this));
+    })
+}
 
 function newMessage(form) {
     const message = form.formToDict();
