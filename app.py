@@ -1,3 +1,8 @@
+import logging
+
+logging.basicConfig(filename='logs/application.log', filemode='a',
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
 import tornado.escape
 import tornado.ioloop
 import tornado.locks
@@ -7,13 +12,10 @@ import controllers.feedbacks
 import service.file_uploader
 import service.feedback
 from tornado.options import define, options, parse_command_line
-import logging
-
-logging.basicConfig(filename='logs/application.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
 
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=True, help="run in debug mode")
+
 
 def main():
     parse_command_line()
