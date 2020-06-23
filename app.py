@@ -1,3 +1,7 @@
+import os
+logPath = os.getcwd()+'/logs'
+if not os.path.exists(logPath):
+    os.makedirs(logPath)
 import logging
 
 logging.basicConfig(filename='logs/application.log', filemode='a',
